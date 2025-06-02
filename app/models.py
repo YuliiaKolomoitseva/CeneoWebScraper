@@ -2,6 +2,7 @@ import os
 import json
 import pandas as pd
 import numpy as np
+from config import headers
 
 class Product:
     def __init__(self, product_id, product_name, opinions, stats):
@@ -15,6 +16,24 @@ class Product:
     
     def __repr__(self):
         return f"Product(product_id={self.product_id}, product_name={self.product_name}, opinions=["+",".join(repr(opinion) for opinion in self.opinions)+f"], stats={self.stats})"
+
+
+    def extract_opinions(self):
+        next_page = f"https://www.ceneo.pl/{product_id}#tab=reviews"
+        while next_page:
+            response = requests.get(next_page, headers = heeaders)
+            if response.status_code == 200:
+                print(next_page):
+                page_dom = BeautifulSoup(response.text, 'html.parser')
+                opinions = page_dom.select("div.js_product-review:not(.user-post--highlight)")
+                for opinions in opinions:
+                    single_opinion
+                    single_opinion = {
+                        key: extract(opinion, *value)
+                        for key,value in selectors.items()
+                    }
+
+
 
     def export_opinions(self):
         if not os.path.exists("./app/data"):
@@ -99,7 +118,41 @@ class Opinion:
     
     def __repr__(self):
         return "Opinion("+", ".join([f"{key}={str(getattr(self, key))}" for key in self.selectors.keys()])+")"
+
+    def extract_name(self):
+        next_page = f""
+        response = requests.get(next_page, headers = headers)
+        
+    if response.status.code == 200:
+        opinions_count = extract_data(page_dom, "a.product-review__link > span")
+        return bool(opinions_count)
+    else:
+        return render_templte("extract.html", form = form)
     
+    def extract(self, opinion):
+        for key, value in self.selectors.items():
+            setattr(self,key, extract_data(opinion, *value))
+        key: extract(opinion, *value)
+            for key,value in selectors.items()
+
+        for opinion in opinions:
+            single_opinion = Opinion()
+            single_opinion.extract(opinion).translate
+
+    def translate(self):
+        self.content_en ["content_en"]= translate_data(self.content_pl)
+        self.pros_en = [translate_data(pros) for pros in self.pros_pl]
+        self.cons_en = [translate_data(pros) for cons in self.cons_pl]
+        return self
+
+
+        def transform(self):
+            self.reommendation = True if self.recommendation == "Polecam" else False if self.recommendation == "Nie polecam" else None
+            self.stars = float(self.stars.split("/")[0].replace(",", "."))
+            self.vote_yes = int(self.vote_yes)
+            self.vote_no = int(self.vote_no)
+
     def transform_to_dict(self):
         return {key: getattr(self, key) for key in self.selectors.keys()}
+
     

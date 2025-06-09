@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Product List</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Opinions</th>
+            <th>Pros</th>
+            <th>Cons</th>
+            <th>Average Score</th>
+            <th>Download</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td><a href="{{ url_for('product', product_id=product['product_id']) }}">{{ product['name'] }}</a></td>
+            <td>{{ product['opinions_count'] }}</td>
+            <td>{{ product['pros_count'] }}</td>
+            <td>{{ product['cons_count'] }}</td>
+            <td>{{ product['avg_score'] }}</td>
+            <td>
+                <a href="{{ url_for('download_opinions', product_id=product['product_id'], filetype='csv') }}">CSV</a> |
+                <a href="{{ url_for('download_opinions', product_id=product['product_id'], filetype='xlsx') }}">XLSX</a> |
+                <a href="{{ url_for('download_opinions', product_id=product['product_id'], filetype='json') }}">JSON</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

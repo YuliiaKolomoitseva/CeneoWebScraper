@@ -50,3 +50,33 @@ def get_product_summaries():
                 product_summaries.append(summary)
 
     return product_summaries
+
+def save_opinions(product_id, opinions):
+    opinions_dir = "app/static/opinions"
+    os.makedirs(opinions_dir, exist_ok=True)
+    path = os.path.join(opinions_dir, f"{product_id}.json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(opinions, f, indent=2, ensure_ascii=False)
+
+def load_opinions(product_id):
+    path = f"app/static/opinions/{product_id}.json"
+    if not os.path.exists(path):
+        return None
+    with open(path, "r", encoding="utf-8") as f:
+        opinions = json.load(f)
+    return opinions
+
+def get_product_details(product_id):
+    opinions = load_opinions(product_id)
+    if not opinions:
+        return None
+    df = pd.DataFrame(opinions)
+    return {
+        "product_id": product_id,
+        "name": df["product_name"][0] if "product_name" in df.columns and not df["product_name"].isnull().all() else product_id,
+        "opinions": opinions,
+        "opinions_count": len(df),
+        "pros_count": df["pros"].apply(lambda x: bool(x and str(x).strip())).sum() if "pros" in df.columns else 0,
+        "cons_count": df["cons"].apply(lambda x: bool(x and str(x).strip())).sum() if "cons" in df.columns else 0,
+        "avg_score": round(df["score"].mean(), 2) if "score" in df.columns and not df["score"].dropna().empty else 0
+    }

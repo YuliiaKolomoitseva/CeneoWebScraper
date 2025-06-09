@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Welcome to Ceneo Web Scraper</h1>
+
+<p>This project is a web scraper for extracting product opinions from Ceneo.</p>
+
+<h3>Purpose of the application</h3>
+<p>To automate extraction and analysis of product reviews from Ceneo.pl</p>
+
+<h3>Description of the application's operation</h3>
+<p>User inputs a product ID, app scrapes reviews, stores them in JSON files, and allows viewing and downloading summaries.</p>
+
+<h3>Libraries used</h3>
+<ul>
+    <li>Flask</li>
+    <li>Requests, BeautifulSoup (for scraping)</li>
+    <li>Pandas</li>
+    <li>Deep Translator</li>
+</ul>
+
+<h3>Applied approaches</h3>
+<ul>
+    <li>Web scraping</li>
+    <li>Data analysis with Pandas</li>
+    <li>Flask for the web interface</li>
+</ul>
+{% endblock %}

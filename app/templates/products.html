@@ -1,10 +1,39 @@
 {% extends "base.html" %}
+{% block title %}Product List - Ceneo Scraper{% endblock %}
+
 {% block content %}
 <h2>Product List</h2>
+
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Product Name</th>
             <th>Opinions</th>
             <th>Pros</th>
-            <th>Cons
+            <th>Cons</th>
+            <th>Average Score</th>
+            <th>Download</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td><a href="{{ url_for('product_details', product_id=product.product_id) }}">{{ product.name }}</a></td>
+            <td>{{ product.opinions_count }}</td>
+            <td>{{ product.pros_count }}</td>
+            <td>{{ product.cons_count }}</td>
+            <td>{{ product.avg_score }}</td>
+            <td>
+                <a href="{{ url_for('download_opinions', product_id=product.product_id, filetype='csv') }}" class="btn btn-sm btn-outline-primary">CSV</a>
+                <a href="{{ url_for('download_opinions', product_id=product.product_id, filetype='xlsx') }}" class="btn btn-sm btn-outline-success">XLSX</a>
+                <a href="{{ url_for('download_opinions', product_id=product.product_id, filetype='json') }}" class="btn btn-sm btn-outline-secondary">JSON</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6" class="text-center">No products found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

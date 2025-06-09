@@ -1,13 +1,6 @@
 from flask import render_template
 from utils import get_product_summaries
 
-# @app.route("/products")
-# def product_list():
-#     products = get_product_summaries()
-#     return render_template("product_list.html", products=products)
-
-# from flask import send_file
-# import pandas as pd
 
 @app.route("/download/<product_id>/<filetype>")
 def download_opinions(product_id, filetype):
@@ -27,3 +20,11 @@ def download_opinions(product_id, filetype):
         return "Unsupported file type", 400
 
     return send_file(filename, as_attachment=True)
+
+    # @app.route("/products")
+# def product_list():
+#     products = get_product_summaries()
+#     return render_template("product_list.html", products=products)
+
+# from flask import send_file
+# import pandas as pd

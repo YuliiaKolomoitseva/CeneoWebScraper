@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect, url_for, request
 from app.forms import ExtractForm
-from app.utils import extract_data, translate_data
+from app.models import Product
 
 @app.route("/")
 def index():
@@ -18,7 +18,14 @@ def extract():
     if form.validate():
         product_id = form.product_id.data
         product = Product(product_id)
-        return redirect(url_for('product', product_id=product_id))
+        if product.extract_name():
+            product.extract_opinions()
+            product.analyze()
+            product.export_info()
+            product.export_opinions()
+            return redirect(url_for('product', product_id=product_id))
+        form.product_id.errors.append('There is no product for provided id or product has no opinions')
+        return render_template('extract.html', form=form)
     return render_template('extract.html', form=form)
 
 @app.route("/products")
